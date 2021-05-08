@@ -1,15 +1,16 @@
 /* saru/ucharbuf.c */
-#include "../inc/ucharbuf.h"
+// #include "../inc/saru-buf.h"
+#include "saru-buf.h"
 
 /**
- * function: Saru_create_UCharBuf2d,
- * returns: a heap-allocated Saru_UCharBuf2d pointer with its buffer initialized to all zeros
- * notes: must be destroyed by Saru_destroy_UCharBuf2d
+ * function: saru_create_ucb2d,
+ * returns: a heap-allocated saru_ucharbuf2d pointer with its buffer initialized to all zeros
+ * notes: must be destroyed by saru_destroy_ucb2d
  */
-Saru_UCharBuf2d *
-Saru_create_UCharBuf2d(unsigned int width, unsigned int height) 
+struct saru_ucharbuf2d *
+saru_create_ucharbuf2d(size_t width, size_t height)
 {
-    Saru_UCharBuf2d *ub = malloc( sizeof(Saru_UCharBuf2d) );
+    struct saru_ucharbuf2d *ub = malloc( sizeof(struct saru_ucharbuf2d) );
     if (!ub)
         return NULL;
 
@@ -21,20 +22,20 @@ Saru_create_UCharBuf2d(unsigned int width, unsigned int height)
     ub->width = width;
     ub->height = height;
     ub->col = ub->row = 0;
-    ub->size = width * height;
+    ub->len = width * height;
     return ub;
 }
 
 /**
- * function: Saru_create_UCharBuf2d_from_uchar,
- * returns: a heap-allocated Saru_UCharBuf2d pointer with its buffer set to the passed-in buf param
- * notes: must be destroyed by destroy_UCharBuffer,
+ * function: saru_create_ucb2d_from_uchar,
+ * returns: a heap-allocated struct saru_ucharbuf2d pointer with its buffer set to the passed-in buf param
+ * notes: must be destroyed by saru_destroy_ucharbuf2d,
  *        buf must not be NULL
  */
-Saru_UCharBuffer *
-create_UCharBuffer_from_uchar(unsigned char *buf, unsigned int width, unsigned int height) 
+struct saru_ucharbuf2d *
+saru_create_ucharbuf2d_from_uchar(unsigned char *buf, size_t width, size_t height) 
 {
-    Saru_UCharBuf2d *ub = malloc( sizeof(Saru_UCharBuf2d) );
+    struct saru_ucharbuf2d *ub = malloc( sizeof(struct saru_ucharbuf2d) );
     if (!ub || !buf)
         return NULL;
 
@@ -42,12 +43,12 @@ create_UCharBuffer_from_uchar(unsigned char *buf, unsigned int width, unsigned i
     ub->width = width;
     ub->height = height;
     ub->col = ub->row = 0;
-    ub->size = width * height;
+    ub->len = width * height;
     return ub;
 }
 
 void 
-Saru_destroy_UCharBuf2d(Saru_UCharBuf2d *ub) 
+saru_destroy_ucharbuf2d(struct saru_ucharbuf2d *ub) 
 {
   if (ub->buf) {
     free(ub->buf);
@@ -56,20 +57,28 @@ Saru_destroy_UCharBuf2d(Saru_UCharBuf2d *ub)
   }
 }
 
-unsigned int
-Saru_sum_UCharBuf2d(Saru_UCharBuf2d *ub) 
+/**
+ * function: saru_sum_ucharbuf2d,
+ * returns: the summation of the elements in the ucharbuf,
+ *          if the buf is NULL, it returns 0
+ */
+size_t
+saru_sum_ucharbuf2d(struct saru_ucharbuf2d *ub) 
 {
-    unsigned int sum = 0;
-    for (unsigned int i = 0; i < ub->size; i++)
+    if (!ub)
+        return 0;
+
+    size_t sum = 0;
+    for (size_t i = 0; i < ub->len; i++)
         sum += ub->buf[i];
     return sum;
 }
 
 void 
-Saru_print_UCharBuf2d(Saru_UCharBuf2d *ub) 
+saru_print_ucharbuf2d(struct saru_ucharbuf2d *ub) 
 {
     if (!ub->buf) return;
-    for (unsigned int i = 0; i < ub->size; i++)
+    for (size_t i = 0; i < ub->len; i++)
         printf("%u ", ub->buf[i]);
 }
 
