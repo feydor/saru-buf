@@ -1,0 +1,12 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+UseTab: ForIndentation
+BreakBeforeBraces: Linux
+AllowShortIfStatementsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: false
+IndentCaseLabels: false
+ContinuationIndentWidth: 4
+Cpp11BracedListStyle: false
+AlignConsecutiveMacros: true
+BraceWrapping:
+  AfterEnum: true
