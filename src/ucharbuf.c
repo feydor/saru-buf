@@ -3,58 +3,58 @@
 #include "saru-buf.h"
 
 /**
- * function: saru_create_ucb2d,
- * returns: a heap-allocated saru_ucharbuf2d pointer with its buffer initialized to all zeros
- * notes: must be destroyed by saru_destroy_ucb2d
+ * function: saru_create_ucharbuf2d,
+ * returns: a heap-allocated saru_ucharbuf2d pointer with its buffer initialized
+ * to all zeros notes: must be destroyed by saru_destroy_ucb2d
  */
 struct saru_ucharbuf2d *
 saru_create_ucharbuf2d(size_t width, size_t height)
 {
-    struct saru_ucharbuf2d *ub = malloc( sizeof(struct saru_ucharbuf2d) );
-    if (!ub)
-        return NULL;
+    struct saru_ucharbuf2d *cb = malloc(sizeof(struct saru_ucharbuf2d));
+    if (!cb)
+	return NULL;
 
-    ub->buf = malloc( width * height );
-    if (!ub->buf)
-        return NULL;
+    cb->buf = malloc(width * height);
+    if (!cb->buf)
+	return NULL;
 
-    memset( ub->buf, 0, width * height );
-    ub->width = width;
-    ub->height = height;
-    ub->col = ub->row = 0;
-    ub->len = width * height;
-    return ub;
+    memset(cb->buf, 0, width * height);
+    cb->width = width;
+    cb->height = height;
+    cb->col = cb->row = 0;
+    cb->len = width * height;
+    return cb;
 }
 
 /**
- * function: saru_create_ucb2d_from_uchar,
- * returns: a heap-allocated struct saru_ucharbuf2d pointer with its buffer set to the passed-in buf param
- * notes: must be destroyed by saru_destroy_ucharbuf2d,
- *        buf must not be NULL
+ * function: saru_wrap_ucharbuf2d,
+ * returns: a heap-allocated struct saru_ucharbuf2d pointer with its buffer set
+ * to the passed-in buf param notes: must be destroyed by
+ * saru_destroy_ucharbuf2d, buf must not be NULL
  */
 struct saru_ucharbuf2d *
-saru_create_ucharbuf2d_from_uchar(unsigned char *buf, size_t width, size_t height) 
+saru_wrap_ucharbuf2d(unsigned char *buf, size_t height)
 {
-    struct saru_ucharbuf2d *ub = malloc( sizeof(struct saru_ucharbuf2d) );
-    if (!ub || !buf)
-        return NULL;
+    struct saru_ucharbuf2d *cb = malloc(sizeof(struct saru_ucharbuf2d));
+    if (!cb || !buf)
+	return NULL;
 
-    ub->buf = buf;
-    ub->width = width;
-    ub->height = height;
-    ub->col = ub->row = 0;
-    ub->len = width * height;
-    return ub;
+    cb->buf = buf;
+    cb->width = width;
+    cb->height = height;
+    cb->col = cb->row = 0;
+    cb->len = width * height;
+    return cb;
 }
 
-void 
-saru_destroy_ucharbuf2d(struct saru_ucharbuf2d *ub) 
+void
+saru_destroy_ucharbuf2d(struct saru_ucharbuf2d *cb)
 {
-  if (ub->buf) {
-    free(ub->buf);
-    if (ub) 
-      free(ub);
-  }
+    if (cb->buf) {
+	free(cb->buf);
+	if (cb)
+	    free(cb);
+    }
 }
 
 /**
@@ -63,22 +63,22 @@ saru_destroy_ucharbuf2d(struct saru_ucharbuf2d *ub)
  *          if the buf is NULL, it returns 0
  */
 size_t
-saru_sum_ucharbuf2d(struct saru_ucharbuf2d *ub) 
+saru_sum_ucharbuf2d(struct saru_ucharbuf2d *cb)
 {
-    if (!ub)
-        return 0;
+    if (!cb)
+	return 0;
 
     size_t sum = 0;
-    for (size_t i = 0; i < ub->len; i++)
-        sum += ub->buf[i];
+    for (size_t i = 0; i < cb->len; i++)
+	sum += cb->buf[i];
     return sum;
 }
 
-void 
-saru_print_ucharbuf2d(struct saru_ucharbuf2d *ub) 
+void
+saru_print_ucharbuf2d(struct saru_ucharbuf2d *cb)
 {
-    if (!ub->buf) return;
-    for (size_t i = 0; i < ub->len; i++)
-        printf("%u ", ub->buf[i]);
+    if (!cb->buf)
+	return;
+    for (size_t i = 0; i < cb->len; i++)
+	printf("%u ", cb->buf[i]);
 }
-

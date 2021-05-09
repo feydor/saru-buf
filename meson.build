@@ -4,7 +4,7 @@ project(
 )
 
 sources = [
- 'src/ucharbuf.c' 
+ 'src/ucharbuf.c'
 ]
 
 inc = include_directories('inc')

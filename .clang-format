@@ -4,9 +4,9 @@ UseTab: ForIndentation
 BreakBeforeBraces: Linux
 AllowShortIfStatementsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: false
+AlwaysBreakAfterReturnType: TopLevelDefinitions
 IndentCaseLabels: false
 ContinuationIndentWidth: 4
-Cpp11BracedListStyle: false
 AlignConsecutiveMacros: true
 BraceWrapping:
   AfterEnum: true

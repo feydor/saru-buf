@@ -6,27 +6,31 @@
 /* test prototypes */
 void setUp(void);
 void tearDown(void);
-void test_init_functions(void); 
+void test_init_functions(void);
 void test_2d_iteration(void);
 
-int main(void) 
+int
+main(void)
 {
     UNITY_BEGIN();
     RUN_TEST(test_init_functions);
     RUN_TEST(test_2d_iteration);
 }
 
-void setUp(void)
+void
+setUp(void)
 {
-	// set stuff up here
+    // set stuff up here
 }
 
-void tearDown(void)
+void
+tearDown(void)
 {
-	// clean stuff up here
+    // clean stuff up here
 }
 
-void test_init_functions(void) 
+void
+test_init_functions(void)
 {
     /* test initial values from saru_create_ucharbuf2d */
     struct saru_ucharbuf2d *b1;
@@ -40,13 +44,14 @@ void test_init_functions(void)
     /* simple iteration */
     unsigned char *bp = b1->buf;
     for (size_t i = 0; i < b1->len; i++)
-        TEST_ASSERT_EQUAL(0, *(bp++));
-    
+	TEST_ASSERT_EQUAL(0, *(bp++));
+
     /* with saru_foreach macro*/
-    saru_foreach(unsigned char *c, ucb->buf, ucb->len) {
-        TEST_ASSERT_EQUAL(0, *c);
+    saru_foreach(unsigned char *c, b1->buf, b1->len)
+    {
+	TEST_ASSERT_EQUAL(0, *c);
     }
-    
+
     /* test initial values from saru_create_ucharbuf2d_from_uchar */
     struct saru_ucharbuf2d *b2;
     unsigned char *uchars = malloc(3);
@@ -64,14 +69,15 @@ void test_init_functions(void)
     saru_destroy_ucharbuf2d(b2);
 }
 
-void test_2d_iteration(void)
+void
+test_2d_iteration(void)
 {
     struct saru_ucharbuf2d *ucb;
     ucb = saru_create_ucharbuf2d(6, 5);
 
     for (ucb->row = 0; ucb->row < ucb->height; ucb->row++)
-        for (ucb->col = 0; ucb->col < ucb->width; ucb->col++)
-            TEST_ASSERT_EQUAL(0, ucb->buf[ucb->row * ucb->width + ucb->col]);
+	for (ucb->col = 0; ucb->col < ucb->width; ucb->col++)
+	    TEST_ASSERT_EQUAL(0, ucb->buf[ucb->row * ucb->width + ucb->col]);
 
     saru_destroy_ucharbuf2d(ucb);
 }
