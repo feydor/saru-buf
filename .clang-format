@@ -6,7 +6,7 @@ AllowShortIfStatementsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: false
 AlwaysBreakAfterReturnType: TopLevelDefinitions
 IndentCaseLabels: false
-ContinuationIndentWidth: 4
+ContinuationIndentWidth: 8
 AlignConsecutiveMacros: true
 BraceWrapping:
   AfterEnum: true

@@ -1,7 +1,8 @@
 /* test/ucharbuf2d.c */
+#include <stdlib.h> /* for malloc */
 #include <unity.h>
 
-#include "saru-buf.h"
+#include "saru-ucharbuf.h"
 
 /* test prototypes */
 void setUp(void);
@@ -47,7 +48,7 @@ test_init_functions(void)
 	TEST_ASSERT_EQUAL(0, *(bp++));
 
     /* with saru_foreach macro*/
-    saru_foreach(unsigned char *c, b1->buf, b1->len)
+    saru_foreach(unsigned char *c, b1)
     {
 	TEST_ASSERT_EQUAL(0, *c);
     }
@@ -59,11 +60,11 @@ test_init_functions(void)
     uchars[1] = 0;
     uchars[2] = 100;
 
-    b2 = saru_create_ucharbuf2d_from_uchar(uchars, 3, 1);
+    b2 = saru_wrap_ucharbuf2d(uchars, 3, 1);
     unsigned char *buf = b2->buf;
     TEST_ASSERT_EQUAL(255, buf[0]);
     TEST_ASSERT_EQUAL(0, buf[1]);
-    TEST_ASSERT_EQUAL(255, buf[2]);
+    TEST_ASSERT_EQUAL(100, buf[2]);
 
     saru_destroy_ucharbuf2d(b1);
     saru_destroy_ucharbuf2d(b2);

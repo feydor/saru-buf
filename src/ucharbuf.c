@@ -1,6 +1,8 @@
 /* saru/ucharbuf.c */
-// #include "../inc/saru-buf.h"
-#include "saru-buf.h"
+#include "saru-ucharbuf.h"
+#include <stdio.h>  /* for printf */
+#include <stdlib.h> /* for malloc */
+#include <string.h> /* for memset */
 
 /**
  * function: saru_create_ucharbuf2d,
@@ -33,7 +35,7 @@ saru_create_ucharbuf2d(size_t width, size_t height)
  * saru_destroy_ucharbuf2d, buf must not be NULL
  */
 struct saru_ucharbuf2d *
-saru_wrap_ucharbuf2d(unsigned char *buf, size_t height)
+saru_wrap_ucharbuf2d(unsigned char *buf, size_t width, size_t height)
 {
     struct saru_ucharbuf2d *cb = malloc(sizeof(struct saru_ucharbuf2d));
     if (!cb || !buf)
@@ -50,11 +52,10 @@ saru_wrap_ucharbuf2d(unsigned char *buf, size_t height)
 void
 saru_destroy_ucharbuf2d(struct saru_ucharbuf2d *cb)
 {
-    if (cb->buf) {
+    if (cb->buf)
 	free(cb->buf);
-	if (cb)
-	    free(cb);
-    }
+    if (cb)
+	free(cb);
 }
 
 /**
@@ -77,7 +78,7 @@ saru_sum_ucharbuf2d(struct saru_ucharbuf2d *cb)
 void
 saru_print_ucharbuf2d(struct saru_ucharbuf2d *cb)
 {
-    if (!cb->buf)
+    if (!cb || !cb->buf)
 	return;
     for (size_t i = 0; i < cb->len; i++)
 	printf("%u ", cb->buf[i]);
