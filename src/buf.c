@@ -5,28 +5,21 @@
 #include <stdlib.h> /* for malloc, calloc */
 #include <string.h> /* for memset */
 
-struct saru_buf *
-saru_createbuf(size_t len)
-{
-    struct saru_buf *sb = malloc(sizeof(struct saru_buf));
-    if (!sb)
-	return NULL;
-    sb->buf = (void **)malloc(len * sizeof(void *));
-    if (!sb->buf)
-	return NULL;
-    memset(sb->buf, 0, len * sizeof(void *));
-    sb->len = len;
-    return sb;
-}
-
 /**
  * initilizes the buffer with typesize bytes of len elements
  */
 void
-saru_bufinit(struct saru_buf *sb, size_t len, size_t typesize)
+saru_initbuf(struct saru_buf *sb, size_t len, size_t typesize)
 {
     sb->buf = calloc(len, typesize);
     sb->len = len;
+}
+
+void
+saru_wrapbuf(struct saru_buf *sb, void **buf)
+{
+    if (sb && buf)
+        sb->buf = buf;
 }
 
 void
@@ -42,11 +35,17 @@ saru_bufsize(struct saru_buf *sb)
     return sb->len * sizeof(void *);
 }
 
+void
+saru_bufput(struct saru_buf *sb, void *elem, size_t i)
+{
+    sb->buf[i] = elem;
+}
+
 void *
 saru_bufget(struct saru_buf *sb, size_t i)
 {
     if (sb && i < sb->len)
-	return sb->buf[i];
+        return sb->buf[i];
     return NULL;
 }
 

@@ -14,10 +14,11 @@ struct saru_buf {
 };
 
 /* interface */
-struct saru_buf *saru_createbuf(size_t len);
-void saru_bufinit(struct saru_buf *sb, size_t len, size_t typesize);
+void saru_initbuf(struct saru_buf *sb, size_t len, size_t typesize);
+void saru_wrapbuf(struct saru_buf *sb, void **buf);
 void saru_destroybuf(struct saru_buf *sb);
 size_t saru_bufsize(struct saru_buf *sb);
+void saru_bufput(struct saru_buf *sb, void *elem, size_t i);
 void *saru_bufget(struct saru_buf *sb, size_t i);
 void saru_printbuf(struct saru_buf *sb, void (*print)(void *));
 

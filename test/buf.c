@@ -7,15 +7,15 @@
 /* test prototypes */
 void setUp(void);
 void tearDown(void);
-void test_init_functions(void);
-// void test_iteration(void);
+void test_saru_bufinit(void);
+void test_saru_bufput_get(void);
 
 int
 main(void)
 {
     UNITY_BEGIN();
-    RUN_TEST(test_init_functions);
-    // RUN_TEST(test_iteration);
+    RUN_TEST(test_saru_bufinit);
+    RUN_TEST(test_saru_bufput_get);
 }
 
 void
@@ -31,23 +31,17 @@ tearDown(void)
 }
 
 void
-test_init_functions(void)
+test_saru_bufinit(void)
 {
     /* test initial values */
     struct saru_buf ints; // will contain 100 ints
-    saru_bufinit(&ints, 100, sizeof(int));
     struct saru_buf *ip = &ints;
+    saru_initbuf(ip, 100, sizeof(int));
     // ints = saru_createbuf(100);
 
-    // TEST_ASSERT_EACH_EQUAL_INT(0, (int *)ip->buf, ip->len);
+    TEST_ASSERT_EACH_EQUAL_INT(0, (int *)ip->buf, ip->len);
     TEST_ASSERT_EQUAL(100, ip->len);
 
-    printf("%d\n", *((int *)saru_bufget(ip, 0)));
-
-    /* simple iteration */
-    // for (size_t i = 0; i < ints.len ; i++)
-    // TEST_ASSERT_EQUAL(0, *(int *)&saru_bufget(&ints, i));
-    // printf("%d ", *(int *)saru_bufget(&ints, i));
 
     /* with saru_foreach macro*/
     /*
@@ -57,4 +51,17 @@ test_init_functions(void)
     */
 
     saru_destroybuf(ip);
+}
+
+void
+test_saru_bufput_get(void)
+{
+    struct saru_buf str;
+    saru_initbuf(&str, 25, sizeof(char));
+
+    char c = 'z';
+    saru_bufput(&str, (void *) &c, 0);
+    TEST_ASSERT_EQUAL_CHAR('z', *(char *) saru_bufget(&str, 0));
+    
+    saru_destroybuf(&str);
 }
