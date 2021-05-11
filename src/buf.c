@@ -6,23 +6,29 @@
 #include <string.h> /* for memset */
 
 /**
- * initilizes the buffer with space for len pointers
- * ex: saru_initbuf(&sb, 100, sizeof(int))
- *     inits sb to hold 100 ints, all set to 0
- * NOTE: must be freed by saru_destroybuf
+ * inits the buffer with space for len pointers
  */
-void
+static void
 sb_init(struct saru_buf *sb, size_t len)
 {
     sb->buf = (void **) malloc(sizeof(void *) * len);
     sb->len = len;
 }
 
+struct saru_buf *
+sb_create(size_t len)
+{
+    struct saru_buf *sb = malloc(sizeof(struct saru_buf));
+    if (sb)
+        sb_init(sb, len);
+    return sb;
+}
+
 void
 sb_destroy(struct saru_buf *sb)
 {
-    if (sb->buf)
-	    free(sb->buf);
+    free(sb->buf);
+    free(sb);
 }
 
 /**
