@@ -35,6 +35,7 @@ struct saru_bytemat *sbm_wrap(byte *buf, size_t wid,
                                          size_t hgt);
 byte sbm_getxy(struct saru_bytemat *sbm, size_t x, size_t y);
 byte sbm_geti(struct saru_bytemat *sbm, size_t i);
+void sbm_putxy(struct saru_bytemat *sbm, byte b, size_t x, size_t y);
 void sbm_sum(struct saru_bytemat *x, struct saru_bytemat *y, 
                                      struct saru_bytemat *out);
 size_t sbm_gsum(struct saru_bytemat *sbm);
@@ -42,6 +43,7 @@ void sbm_fill(struct saru_bytemat *sbm, byte c);
 size_t sbm_size(struct saru_bytemat *sbm);
 int sbm_injective(struct saru_bytemat *x, struct saru_bytemat *y);
 int sbm_subinjective(struct saru_bytemat *x, struct saru_bytemat *y);
+size_t sbm_max(struct saru_bytemat *x);
 void sbm_foreach(struct saru_bytemat *x, void (*func)(struct saru_bytemat *));
 void sbm_print(struct saru_bytemat *sbm);
 void sbm_destroy(struct saru_bytemat *sbm);
@@ -50,6 +52,10 @@ void sbm_destroy(struct saru_bytemat *sbm);
 #define SBM_CREATE(sbm, wid, hgt) \
     struct saru_bytemat *sbm; \
     sbm = sbm_create(wid, hgt);
+
+#define SBM_WRAP(sbm, buf, wid, hgt) \
+    struct saru_bytemat *sbm; \
+    sbm = sbm_wrap(buf, wid, hgt);
 
 /**
  * taken from: https://stackoverflow.com/questions/400951/does-c-have-a-foreach-loop-construct

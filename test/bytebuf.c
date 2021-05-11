@@ -16,6 +16,7 @@ void test_sbm_foreach_macro(void);
 void test_sbm_injective(void);
 void test_sbm_subinjective(void);
 void test_sbm_foreach(void);
+void test_sbm_max(void);
 
 int main(void)
 {
@@ -29,6 +30,7 @@ int main(void)
     RUN_TEST(test_sbm_injective);
     RUN_TEST(test_sbm_subinjective);
     RUN_TEST(test_sbm_foreach);
+    RUN_TEST(test_sbm_max);
 }
 
 void setUp(void)
@@ -208,15 +210,32 @@ void test_sbm_subinjective(void)
     sbm_destroy(y);
 }
 
-static void iszero(struct saru_bytemat *sbm)
+static void isten(struct saru_bytemat *sbm)
 {
-   TEST_ASSERT_EQUAL(0, sbm_getxy(sbm, sbm->col, sbm->row)); 
+   TEST_ASSERT_EQUAL(10, sbm_getxy(sbm, sbm->col, sbm->row)); 
 }
 
 void test_sbm_foreach(void)
 {
     SBM_CREATE(x, 12, 6);
+    sbm_fill(x, 10);
 
-    sbm_foreach(x, iszero);
+    sbm_foreach(x, isten);
+    sbm_destroy(x);
+}
+
+void test_sbm_max(void)
+{
+    SBM_CREATE(x, 32, 32);
+
+    /* put 255 at (10, 12) */
+    sbm_putxy(x, 255, 10, 12);
+
+    size_t res = 0;
+    res = sbm_max(x);
+
+    TEST_ASSERT_EQUAL(255, res);
+    TEST_ASSERT_EQUAL(10, x->col);
+    TEST_ASSERT_EQUAL(12, x->row);
     sbm_destroy(x);
 }

@@ -59,15 +59,25 @@ sbm_geti(struct saru_bytemat *sbm, size_t i)
 }
 
 /**
- * returns the byte at row x and height y, if they are within bounds
+ * returns the byte at col x and row y, if they are within bounds
  * otherwise it returns BYTE_MAX
  */
 byte 
 sbm_getxy(struct saru_bytemat *sbm, size_t x, size_t y)
 {
     if (x < sbm->wid && y < sbm->hgt)
-        return sbm->buf[y * sbm->wid + y];
+        return sbm->buf[y * sbm->wid + x];
     return BYTE_MAX;
+}
+
+/**
+ * puts the byte b into col x and row y, if they are within bounds
+ */
+void 
+sbm_putxy(struct saru_bytemat *sbm, byte b, size_t x, size_t y)
+{
+    if (x < sbm->wid && y < sbm->hgt)
+        sbm->buf[y * sbm->wid + x] = b;
 }
 
 /**
@@ -93,6 +103,9 @@ sbm_gsum(struct saru_bytemat *sbm)
     return sum;
 }
 
+/**
+ * fills the matrix with c
+ */
 void
 sbm_fill(struct saru_bytemat *sbm, byte c)
 {
@@ -125,6 +138,29 @@ int
 sbm_subinjective(struct saru_bytemat *x, struct saru_bytemat *y)
 {
    return x->col + y->wid <= x->wid && x->row + y->hgt <= x->hgt;
+}
+
+/**
+ * returns the maximum value in the matrix
+ * and sets the row and col members to its coordinates
+ */
+size_t
+sbm_max(struct saru_bytemat *x)
+{
+    size_t max = 0, maxrow = 0, maxcol = 0;
+    for (x->row = 0; x->row < x->hgt; x->row++)
+        for (x->col = 0; x->col < x->wid; x->col++) {
+            byte b = sbm_getxy(x, x->col, x->row);
+            if (b > max) {
+                max = b;
+                maxrow = x->row;
+                maxcol = x->col;
+            }
+        }
+
+    x->row = maxrow;
+    x->col = maxcol;
+    return max;
 }
 
 /**
