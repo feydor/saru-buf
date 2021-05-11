@@ -47,6 +47,18 @@ sbm_wrap(unsigned char *buf, size_t wid, size_t hgt)
 }
 
 /**
+ * returns the byte in thje ith place, if it is inbounds
+ * otherwise it returns BYTE_MAX
+ */
+byte 
+sbm_geti(struct saru_bytemat *sbm, size_t i)
+{
+    if (i < sbm->len)
+        return sbm->buf[i];
+    return BYTE_MAX;
+}
+
+/**
  * returns the byte at row x and height y, if they are within bounds
  * otherwise it returns BYTE_MAX
  */
@@ -81,10 +93,50 @@ sbm_gsum(struct saru_bytemat *sbm)
     return sum;
 }
 
+void
+sbm_fill(struct saru_bytemat *sbm, byte c)
+{
+    memset(sbm->buf, c, sbm->len);
+}
+
 size_t
 sbm_size(struct saru_bytemat *sbm)
 {
     return sbm->len;
+}
+
+/**
+ * returns 1 if for every element in x there is a corresponding element
+ * in y, otherwise 0
+ */
+int 
+sbm_bijection(struct saru_bytemat *x, struct saru_bytemat *y)
+{
+   return (x->wid <= y->wid && x->hgt <= y->hgt);
+}
+
+/**
+ * returns 1 if for every element in submatrix x
+ * there is a corresponding element in submatrix y
+ * otherwise 0,
+ * submatrices are accessed using the row and col members
+ */
+int 
+sbm_subbijection(struct saru_bytemat *x, struct saru_bytemat *y)
+{
+   return x->col + y->wid <= x->wid && x->row + y->hgt <= x->hgt;
+}
+
+/**
+ * iterates through x
+ * each iteration, the row and col members are updated before caling func
+ */
+void
+sbm_foreach(struct saru_bytemat *x, void (*func)(struct saru_bytemat *))
+{
+    for (x->row = 0; x->row < x->hgt; x->row++)
+        for (x->col = 0; x->col < x->wid; x->col++)
+            func(x);
 }
 
 void
