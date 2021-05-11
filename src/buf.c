@@ -50,6 +50,28 @@ sb_len(struct saru_buf *sb)
 }
 
 /**
+ * copies n characters from str into the buffer
+ */
+void
+sb_strcpy(struct saru_buf *sb, char *str, size_t n)
+{
+    sb_memcpy(sb, (void *)str, n, sizeof(char));
+}
+
+/**
+ * copies n elements of typesize bytes from src into the buffer
+ */
+void
+sb_memcpy(struct saru_buf *sb, void *src, size_t n, size_t typesize)
+{
+    if (n <= sb->len)
+        for (size_t i = 0; i < n; i++) {
+            sb->buf[i] = (void *)src;
+            src = (void *)(char *)src + typesize;
+        }
+}
+
+/**
  * puts ptr in the ith spot of sb
  */
 void
@@ -65,7 +87,7 @@ sb_put(struct saru_buf *sb, void *ptr, size_t i)
 void *
 sb_get(struct saru_buf *sb, size_t i)
 {
-    if (sb && i < sb->len)
+    if (i < sb->len)
         return sb->buf[i]; 
     return NULL;
 }
