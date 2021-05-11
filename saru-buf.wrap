@@ -1,0 +1,5 @@
+[wrap-git]
+directory = saru-buf.git
+url = https://github.com/feydor/saru-buf
+revision = master
+
