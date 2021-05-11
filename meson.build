@@ -4,7 +4,7 @@ project(
 )
 
 sources = [
- 'src/ucharbuf.c',
+ 'src/bytebuf.c',
  'src/buf.c'
 ]
 
@@ -38,20 +38,20 @@ unity_dep = dependency(
   fallback: ['Unity', 'unity_dep'],
 )
 
-ucharbuf_test = executable(
-  'ucharbuf-test',
-  ['test/ucharbuf.c'],
+bytebuf_test = executable(
+  'bytebuf-test',
+  ['test/bytebuf.c'],
   dependencies: [libsaru_buf_dep, unity_dep],
 )
-test('unittest_ ucharbuf', ucharbuf_test)
+test('unittest, saru-bytebuf', bytebuf_test)
 
 buf_test = executable(
   'buf-test',
   ['test/buf.c'],
   dependencies: [libsaru_buf_dep, unity_dep],
 )
-test('unittest, buf', buf_test)
+test('unittest, saru-buf', buf_test)
 
 # For each public header in "inc/":
 install_headers('inc/saru-buf.h', subdir : 'saru-buf')
-install_headers('inc/saru-ucharbuf.h', subdir : 'saru-buf')
+install_headers('inc/saru-bytebuf.h', subdir : 'saru-buf')
