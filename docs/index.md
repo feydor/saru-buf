@@ -14,7 +14,7 @@ Libsaru-buf is a library of static buffer data structures and their accompanying
 When feasible, structures are directly copied from their relevant header file in `inc`.
 
 ### `sar_bytemat`
-An unsigned byte matrix of len bytes. The type byte is a macro of unsigned char.
+An unsigned byte matrix of `len` bytes. The type `byte` is a macro of `unsigned char`.
 ```C
 struct saru_bytemat {
     byte  *buf;
@@ -66,7 +66,7 @@ void sbm_fill(struct saru_bytemat *sbm, byte c)
 ```
 Fills the matrix with byte `c`.
 
-``C
+```C
 size_t sbm_size(struct saru_bytemat *sbm)
 ```
 Returns the size of the matrix in bytes.
