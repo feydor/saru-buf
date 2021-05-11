@@ -1,21 +1,22 @@
 /* test/buf.c */
 #include "saru-buf.h"
-#include <stdio.h>
+#include <stdio.h> /* for printf */
 #include <stdlib.h> /* for malloc */
+#include <string.h> /* for memset */
 #include <unity.h>
 
 /* test prototypes */
 void setUp(void);
 void tearDown(void);
-void test_saru_bufinit(void);
-void test_saru_bufput_get(void);
+void test_sb_bufinit(void);
+void test_sb_bufput_get(void);
 
 int
 main(void)
 {
     UNITY_BEGIN();
-    RUN_TEST(test_saru_bufinit);
-    RUN_TEST(test_saru_bufput_get);
+    RUN_TEST(test_sb_bufinit);
+    RUN_TEST(test_sb_bufput_get);
 }
 
 void
@@ -31,37 +32,31 @@ tearDown(void)
 }
 
 void
-test_saru_bufinit(void)
+test_sb_bufinit(void)
 {
     /* test initial values */
     struct saru_buf ints; // will contain 100 ints
-    struct saru_buf *ip = &ints;
-    saru_initbuf(ip, 100, sizeof(int));
-    // ints = saru_createbuf(100);
+    sb_init(&ints, 100);
 
-    TEST_ASSERT_EACH_EQUAL_INT(0, (int *)ip->buf, ip->len);
-    TEST_ASSERT_EQUAL(100, ip->len);
+    sb_fill(&ints, 0);
 
+    TEST_ASSERT_EQUAL(100, ints.len);
+    for (size_t i = 0; i < ints.len; i++)
+        TEST_ASSERT_EQUAL(0, *(int *) sb_get(&ints, i)); 
 
-    /* with saru_foreach macro*/
-    /*
-    saru_foreach(void *elem,, ints) {
-        TEST_ASSERT_EQUAL(0, *(int *)elem);
-    }
-    */
-
-    saru_destroybuf(ip);
+    sb_destroy(&ints);
 }
 
 void
-test_saru_bufput_get(void)
+test_sb_bufput_get(void)
 {
     struct saru_buf str;
-    saru_initbuf(&str, 25, sizeof(char));
+    sb_init(&str, 25);
 
     char c = 'z';
-    saru_bufput(&str, (void *) &c, 0);
-    TEST_ASSERT_EQUAL_CHAR('z', *(char *) saru_bufget(&str, 0));
+    sb_put(&str, (void *) &c, 2);
+    TEST_ASSERT_EQUAL_CHAR('z', *(char *) sb_get(&str, 2));
     
-    saru_destroybuf(&str);
+    sb_destroy(&str);
 }
+

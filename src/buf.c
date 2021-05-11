@@ -6,58 +6,73 @@
 #include <string.h> /* for memset */
 
 /**
- * initilizes the buffer with typesize bytes of len elements
+ * initilizes the buffer with space for len pointers
+ * ex: saru_initbuf(&sb, 100, sizeof(int))
+ *     inits sb to hold 100 ints, all set to 0
+ * NOTE: must be freed by saru_destroybuf
  */
 void
-saru_initbuf(struct saru_buf *sb, size_t len, size_t typesize)
+sb_init(struct saru_buf *sb, size_t len)
 {
-    sb->buf = calloc(len, typesize);
+    sb->buf = (void **) malloc(sizeof(void *) * len);
     sb->len = len;
 }
 
 void
-saru_wrapbuf(struct saru_buf *sb, void **buf)
-{
-    if (sb && buf)
-        sb->buf = buf;
-}
-
-void
-saru_destroybuf(struct saru_buf *sb)
+sb_destroy(struct saru_buf *sb)
 {
     if (sb->buf)
-	free(sb->buf);
+	    free(sb->buf);
+}
+
+/**
+ * fills the buffer with pointers to ints containing c
+ */
+void
+sb_fill(struct saru_buf *sb, int c)
+{
+    int arr[sb->len];
+    memset(arr, c, sb->len * sizeof(int));
+    for (size_t i = 0; i < sb->len; i++)
+        sb->buf[i] = (void *)&arr[i];
 }
 
 size_t
-saru_bufsize(struct saru_buf *sb)
+sb_len(struct saru_buf *sb)
 {
-    return sb->len * sizeof(void *);
+    return sb->len;
 }
 
+/**
+ * puts ptr in the ith spot of sb
+ */
 void
-saru_bufput(struct saru_buf *sb, void *elem, size_t i)
+sb_put(struct saru_buf *sb, void *ptr, size_t i)
 {
-    sb->buf[i] = elem;
+    if (i < sb->len)
+        sb->buf[i] = ptr;
 }
 
+/**
+ * returns the ith pointer in sb
+ */
 void *
-saru_bufget(struct saru_buf *sb, size_t i)
+sb_get(struct saru_buf *sb, size_t i)
 {
     if (sb && i < sb->len)
-        return sb->buf[i];
+        return sb->buf[i]; 
     return NULL;
 }
 
 /**
- * calls the passed in print function on each elem of the buffer
+ * calls the passed in print function on each pointer of the buffer
  */
 void
-saru_printbuf(struct saru_buf *sb, void (*print)(void *))
+sb_print(struct saru_buf *sb, void (*print)(void *))
 {
     if (!sb || !sb->buf || !print)
-	return;
+        return;
 
     for (size_t i = 0; i < sb->len; i++)
-	print(sb->buf[i]);
+        print(sb_get(sb, i));
 }
