@@ -17,6 +17,10 @@ revision = master
 ```
 or simply use the example saru-buf.wrap in the root of this repository.
 
+## Documentation
+
+Read the documentation for a description of the public API and examples: [libsaru-buf API Docs](/docs/index.md).
+
 ## Development
 
 To create a build directory, run:
