@@ -13,8 +13,8 @@ void test_sbm_getxy(void);
 void test_sbm_sum(void);
 void test_sbm_gsum(void);
 void test_sbm_foreach_macro(void);
-void test_sbm_bijection(void);
-void test_sbm_subbijection(void);
+void test_sbm_injective(void);
+void test_sbm_subinjective(void);
 void test_sbm_foreach(void);
 
 int main(void)
@@ -26,8 +26,8 @@ int main(void)
     RUN_TEST(test_sbm_sum);
     RUN_TEST(test_sbm_gsum);
     RUN_TEST(test_sbm_foreach_macro);
-    RUN_TEST(test_sbm_bijection);
-    RUN_TEST(test_sbm_subbijection);
+    RUN_TEST(test_sbm_injective);
+    RUN_TEST(test_sbm_subinjective);
     RUN_TEST(test_sbm_foreach);
 }
 
@@ -149,12 +149,12 @@ void test_sbm_foreach_macro(void)
     sbm_destroy(x);
 }
 
-void test_sbm_bijection(void)
+void test_sbm_injective(void)
 {
     SBM_CREATE(a, 5, 5);
     SBM_CREATE(b, 5, 5);
 
-    TEST_ASSERT_EQUAL(1, sbm_bijection(a, b));
+    TEST_ASSERT_EQUAL(1, sbm_injective(a, b));
     sbm_destroy(a);
     sbm_destroy(b);
 
@@ -162,44 +162,44 @@ void test_sbm_bijection(void)
     SBM_CREATE(c, 6, 5);
     SBM_CREATE(d, 5, 5);
     
-    TEST_ASSERT_EQUAL(0, sbm_bijection(c, d));
+    TEST_ASSERT_EQUAL(0, sbm_injective(c, d));
     sbm_destroy(c);
     sbm_destroy(d);
 
     /* x is taller than y */
     SBM_CREATE(e, 5, 6);
     SBM_CREATE(f, 5, 5);
-    TEST_ASSERT_EQUAL(0, sbm_bijection(e, f));
+    TEST_ASSERT_EQUAL(0, sbm_injective(e, f));
     sbm_destroy(e);
     sbm_destroy(f);
 
     /* y is wider than x */
     SBM_CREATE(g, 5, 5);
     SBM_CREATE(h, 6, 5);
-    TEST_ASSERT_EQUAL(1, sbm_bijection(g, h));
+    TEST_ASSERT_EQUAL(1, sbm_injective(g, h));
     sbm_destroy(g);
     sbm_destroy(h);
     
     /* y is taller than x */
     SBM_CREATE(i, 5, 5);
     SBM_CREATE(j, 5, 6);
-    TEST_ASSERT_EQUAL(1, sbm_bijection(i, j));
+    TEST_ASSERT_EQUAL(1, sbm_injective(i, j));
     sbm_destroy(i);
     sbm_destroy(j);
 }
 
-void test_sbm_subbijection(void)
+void test_sbm_subinjective(void)
 {
     SBM_CREATE(x, 5, 3);
     SBM_CREATE(y, 3, 3);
 
     /* there are 3 ways to 'fit' y in x
-     * ie there are 3 sub-bijections in x
+     * ie there are 3 sub-injectives in x
      */
     size_t hits = 0;
     for (x->row = 0; x->row < x->hgt; x->row++)
         for (x->col = 0; x->col < x->wid; x->col++) {
-            if (sbm_subbijection(x, y))
+            if (sbm_subinjective(x, y))
                 hits++;
         }
 

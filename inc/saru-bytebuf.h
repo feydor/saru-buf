@@ -40,8 +40,8 @@ void sbm_sum(struct saru_bytemat *x, struct saru_bytemat *y,
 size_t sbm_gsum(struct saru_bytemat *sbm);
 void sbm_fill(struct saru_bytemat *sbm, byte c);
 size_t sbm_size(struct saru_bytemat *sbm);
-int sbm_bijection(struct saru_bytemat *x, struct saru_bytemat *y);
-int sbm_subbijection(struct saru_bytemat *x, struct saru_bytemat *y);
+int sbm_injective(struct saru_bytemat *x, struct saru_bytemat *y);
+int sbm_subinjective(struct saru_bytemat *x, struct saru_bytemat *y);
 void sbm_foreach(struct saru_bytemat *x, void (*func)(struct saru_bytemat *));
 void sbm_print(struct saru_bytemat *sbm);
 void sbm_destroy(struct saru_bytemat *sbm);

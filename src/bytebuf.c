@@ -110,7 +110,7 @@ sbm_size(struct saru_bytemat *sbm)
  * in y, otherwise 0
  */
 int 
-sbm_bijection(struct saru_bytemat *x, struct saru_bytemat *y)
+sbm_injective(struct saru_bytemat *x, struct saru_bytemat *y)
 {
    return (x->wid <= y->wid && x->hgt <= y->hgt);
 }
@@ -122,7 +122,7 @@ sbm_bijection(struct saru_bytemat *x, struct saru_bytemat *y)
  * submatrices are accessed using the row and col members
  */
 int 
-sbm_subbijection(struct saru_bytemat *x, struct saru_bytemat *y)
+sbm_subinjective(struct saru_bytemat *x, struct saru_bytemat *y)
 {
    return x->col + y->wid <= x->wid && x->row + y->hgt <= x->hgt;
 }
