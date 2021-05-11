@@ -61,10 +61,9 @@ test_init_functions(void)
     uchars[2] = 100;
 
     b2 = saru_wrap_ucharbuf2d(uchars, 3, 1);
-    unsigned char *buf = b2->buf;
-    TEST_ASSERT_EQUAL(255, buf[0]);
-    TEST_ASSERT_EQUAL(0, buf[1]);
-    TEST_ASSERT_EQUAL(100, buf[2]);
+    TEST_ASSERT_EQUAL(255, b2->buf[0]);
+    TEST_ASSERT_EQUAL(0, b2->buf[1]);
+    TEST_ASSERT_EQUAL(100, b2->buf[2]);
 
     saru_destroy_ucharbuf2d(b1);
     saru_destroy_ucharbuf2d(b2);
@@ -77,8 +76,9 @@ test_2d_iteration(void)
     ucb = saru_create_ucharbuf2d(6, 5);
 
     for (ucb->row = 0; ucb->row < ucb->height; ucb->row++)
-	for (ucb->col = 0; ucb->col < ucb->width; ucb->col++)
-	    TEST_ASSERT_EQUAL(0, ucb->buf[ucb->row * ucb->width + ucb->col]);
+        for (ucb->col = 0; ucb->col < ucb->width; ucb->col++)
+            TEST_ASSERT_EQUAL(0, ucb->buf[ucb->row * ucb->width + ucb->col]);
 
     saru_destroy_ucharbuf2d(ucb);
 }
+

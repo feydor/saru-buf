@@ -13,12 +13,10 @@
 struct saru_buf {
     void  **buf;
     size_t len;
-    size_t typesize;
 };
 
 /* interface */
 void sb_init(struct saru_buf *sb, size_t len);
-struct saru_buf *sb_new(size_t len, size_t typesize);
 void sb_destroy(struct saru_buf *sb);
 void sb_fill(struct saru_buf *sb, int c);
 size_t sb_len(struct saru_buf *sb);
