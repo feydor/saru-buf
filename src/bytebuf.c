@@ -81,14 +81,20 @@ sbm_putxy(struct saru_bytemat *sbm, byte b, size_t x, size_t y)
 }
 
 /**
- * sums two mxn matrices (x and y) and populates out with the result
+ * sums two mxn matrices (x and y) and returns a new saru_bytemat pointer
+ * containing the results
+ * NOTE: the returned pointer must be freed with sbm_destroy
  */
-void
-sbm_sum(const struct saru_bytemat *x, const struct saru_bytemat *y, struct saru_bytemat *out) {
-    // if all dimensions match
-    if (x->wid == y->wid && x->hgt == y->hgt && out->wid == x->wid && out->hgt == x->hgt)
+struct saru_bytemat *
+sbm_sum(const struct saru_bytemat *x, const struct saru_bytemat *y) {
+    if (x->wid == y->wid && x->hgt == y->hgt) {
+        struct saru_bytemat *res;
+        res = sbm_create(x->wid, x->hgt);
         for (size_t i = 0; i < x->len; i++)
-            out->buf[i] = x->buf[i] + y->buf[i];
+            res->buf[i] = x->buf[i] + y->buf[i];
+        return res;
+    }
+    return NULL;
 }
 
 /**
@@ -144,25 +150,28 @@ sbm_subinjective(const struct saru_bytemat *t, const struct saru_bytemat *f)
 
 /**
  * returns the maximum value in the matrix
- * and sets the row and col members to its coordinates
+ * and sets the optional row and col parameters to its coordinates
  */
 size_t
-sbm_max(struct saru_bytemat *x)
+sbm_max(const struct saru_bytemat *x, size_t *col, size_t *row)
 {
-    size_t max = 0, maxrow = 0, maxcol = 0;
-    for (x->row = 0; x->row < x->hgt; x->row++)
-        for (x->col = 0; x->col < x->wid; x->col++) {
-            byte b = sbm_getxy(x, x->col, x->row);
-            if (b > max) {
-                max = b;
-                maxrow = x->row;
-                maxcol = x->col;
+    size_t maxrow = 0, maxcol = 0;
+    size_t tmax = 0;
+    for (size_t row = 0; row < x->hgt; row++)
+        for (size_t col = 0; col < x->wid; col++) {
+            const byte b = sbm_getxy(x, col, row);
+            if (b > tmax) {
+                tmax = b;
+                maxrow = row;
+                maxcol = col;
             }
         }
 
-    x->row = maxrow;
-    x->col = maxcol;
-    return max;
+    if (col)
+        *col = maxcol;
+    if (row)
+        *row = maxrow;
+    return tmax;
 }
 
 /**

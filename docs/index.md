@@ -52,9 +52,9 @@ void sbm_putxy(struct saru_bytemat *sbm, byte b, size_t x, size_t y)
 Puts byte `b` into column `x` and row `y`, if they are within bounds. 
 
 ```C
-void sbm_sum(const struct saru_bytemat *x, const struct saru_bytemat *y, struct saru_bytemat *out)
+struct saru_bytemat * sbm_sum(const struct saru_bytemat *x, const struct saru_bytemat *y);
 ```
-Sums two mxn matrices and stores the results in `out`.
+Sums two mxn matrices and returns a new heap-allocated matrix pointer containing the results. The returned pointer must be freed with sbm_destroy.
 
 ```C
 size_t sbm_gsum(const struct saru_bytemat *sbm)
@@ -82,9 +82,9 @@ int sbm_subinjective(const struct saru_bytemat *t, const struct saru_bytemat *f)
 Returns 1 if for every element of `t` there is a corresponding element in the current submatrix of `f`. Otherwise 0. IE is `t` smaller than `f`.
 
 ```C
-size_t sbm_max(struct saru_bytemat *x)
+size_t sbm_max(const struct saru_bytemat *x, size_t *col, size_t *row);
 ```
-Returns the maximum value in the matrix. The `row` and `col` members are updated to the max's coordinates.
+Returns the maximum value in the matrix and sets the optional row and col parameters to the max's coordinates.
 
 ```C
 void sbm_foreach(struct saru_bytemat *x, void (*func)(struct saru_bytemat *))

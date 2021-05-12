@@ -99,25 +99,24 @@ void test_sbm_sum(void)
 {
    struct saru_bytemat *x;     
    struct saru_bytemat *y;     
-   struct saru_bytemat *res;     
 
    size_t wid, hgt;
    wid = 1000, hgt = 1000;
    x = sbm_create(wid, hgt);
    y = sbm_create(wid, hgt);
-   res = sbm_create(wid, hgt);
 
    sbm_fill(x, 1);
    sbm_fill(y, 2);
 
-   sbm_sum(x, y, res);
+   struct saru_bytemat *res;
+   if ( (res = sbm_sum(x, y)) ) {
+       for (size_t i = 0; i < res->len; i++)
+           TEST_ASSERT_EQUAL(3, res->buf[0]);
 
-    for (size_t i = 0; i < res->len; i++)
-        TEST_ASSERT_EQUAL(3, res->buf[0]);
-
-    sbm_destroy(x);
-    sbm_destroy(y);
-    sbm_destroy(res);
+       sbm_destroy(res);
+   }
+   sbm_destroy(x);
+   sbm_destroy(y);
 }
 
 void test_sbm_gsum(void)
@@ -228,14 +227,21 @@ void test_sbm_max(void)
 {
     SBM_CREATE(x, 32, 32);
 
-    /* put 255 at (10, 12) */
-    sbm_putxy(x, 255, 10, 12);
+    sbm_putxy(x, 100, 10, 12);
 
-    size_t res = 0;
-    res = sbm_max(x);
+    size_t col = 0, row = 0, max = 0;
+    max = sbm_max(x, &col, &row);
 
-    TEST_ASSERT_EQUAL(255, res);
-    TEST_ASSERT_EQUAL(10, x->col);
-    TEST_ASSERT_EQUAL(12, x->row);
+    TEST_ASSERT_EQUAL(100, max);
+    TEST_ASSERT_EQUAL(10, col);
+    TEST_ASSERT_EQUAL(12, row);
+
+    /* test that col and row are indeed optional in sbm_max */
+    sbm_putxy(x, 101, 13, 12);
+
+    max = sbm_max(x, NULL, NULL);
+
+    TEST_ASSERT_EQUAL(101, max);
+
     sbm_destroy(x);
 }

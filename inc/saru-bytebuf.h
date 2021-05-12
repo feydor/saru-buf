@@ -41,8 +41,7 @@ byte sbm_geti(const struct saru_bytemat *sbm, size_t i);
 
 void sbm_putxy(struct saru_bytemat *sbm, byte b, size_t x, size_t y);
 
-void sbm_sum(const struct saru_bytemat *x, const struct saru_bytemat *y, 
-                                           struct saru_bytemat *out);
+struct saru_bytemat * sbm_sum(const struct saru_bytemat *x, const struct saru_bytemat *y);
 
 size_t sbm_gsum(const struct saru_bytemat *sbm);
 
@@ -54,7 +53,7 @@ int sbm_injective(const struct saru_bytemat *x, const struct saru_bytemat *y);
 
 int sbm_subinjective(const struct saru_bytemat *x, const struct saru_bytemat *y);
 
-size_t sbm_max(struct saru_bytemat *x);
+size_t sbm_max(const struct saru_bytemat *x, size_t *col, size_t *row);
 
 void sbm_foreach(struct saru_bytemat *x, void (*func)(struct saru_bytemat *));
 
