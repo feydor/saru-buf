@@ -37,12 +37,12 @@ struct saru_bytemat *sbm_wrap(byte *buf, size_t wid, size_t hgt)
 Returns a pointer to a heap-allocated `saru_bytemat` withs its buffer set to the `buf` param.
 
 ```C
-byte sbm_getxy(struct saru_bytemat *sbm, size_t x, size_t y)
+byte sbm_getxy(const struct saru_bytemat *sbm, size_t x, size_t y)
 ```
 Returns the byte at column `x` and row `y`, if they are within bounds. Otherwise it returns `BYTE_MAX`.
 
 ```C
-byte sbm_geti(struct saru_bytemat *sbm, size_t i)
+byte sbm_geti(const struct saru_bytemat *sbm, size_t i)
 ```
 Returns the byte in the `i`th place, if it is within bounds. Otherwise it returns `BYTE_MAX`.
 
@@ -52,12 +52,12 @@ void sbm_putxy(struct saru_bytemat *sbm, byte b, size_t x, size_t y)
 Puts byte `b` into column `x` and row `y`, if they are within bounds. 
 
 ```C
-void sbm_sum(struct saru_bytemat *x, struct saru_bytemat *y, struct saru_bytemat *out)
+void sbm_sum(const struct saru_bytemat *x, const struct saru_bytemat *y, struct saru_bytemat *out)
 ```
 Sums two mxn matrices and stores the results in `out`.
 
 ```C
-size_t sbm_gsum(struct saru_bytemat *sbm)
+size_t sbm_gsum(const struct saru_bytemat *sbm)
 ```
 Returns the grand sum of the elements in the matrix.
 
@@ -67,19 +67,19 @@ void sbm_fill(struct saru_bytemat *sbm, byte c)
 Fills the matrix with byte `c`.
 
 ```C
-size_t sbm_size(struct saru_bytemat *sbm)
+size_t sbm_size(const struct saru_bytemat *sbm)
 ```
 Returns the size of the matrix in bytes.
 
 ```C
-int sbm_injective(struct saru_bytemat *x, struct saru_bytemat *y)
+int sbm_injective(const struct saru_bytemat *t, const struct saru_bytemat *f)
 ```
-Returns 1 if for every element in `x` there is a corresponding element in `y`. Otherwise 0.
+Returns 1 if for every element in `t` there is a corresponding element in `f`. Otherwise 0. IE is `t` smaller than `f`.
 
 ```C
-int sbm_subinjective(struct saru_bytemat *x, struct saru_bytemat *y)
+int sbm_subinjective(const struct saru_bytemat *t, const struct saru_bytemat *f)
 ```
-Returns 1 if for every element of the current submatrix ox `x` there is a corresponding element in `y`. Otherwise 0.
+Returns 1 if for every element of `t` there is a corresponding element in the current submatrix of `f`. Otherwise 0. IE is `t` smaller than `f`.
 
 ```C
 size_t sbm_max(struct saru_bytemat *x)
@@ -92,7 +92,7 @@ void sbm_foreach(struct saru_bytemat *x, void (*func)(struct saru_bytemat *))
 Iterates through `x` calling the user-provided `func` on each element. The `row` and `col` members are update each iteration.
 
 ```C
-void sbm_print(struct saru_bytemat *sbm)
+void sbm_print(const struct saru_bytemat *sbm)
 ```
 Prints the byte matrix.
 

@@ -192,25 +192,25 @@ void test_sbm_injective(void)
 
 void test_sbm_subinjective(void)
 {
-    SBM_CREATE(x, 5, 3);
-    SBM_CREATE(y, 3, 3);
+    SBM_CREATE(frame, 5, 3);
+    SBM_CREATE(x, 3, 3);
 
     /* there are 3 ways to 'fit' y in x
      * ie there are 3 sub-injectives in x
      */
     size_t hits = 0;
-    for (x->row = 0; x->row < x->hgt; x->row++)
-        for (x->col = 0; x->col < x->wid; x->col++) {
-            if (sbm_subinjective(x, y))
+    for (frame->row = 0; frame->row < frame->hgt; frame->row++)
+        for (frame->col = 0; frame->col < frame->wid; frame->col++) {
+            if (sbm_subinjective(x, frame))
                 hits++;
         }
 
     TEST_ASSERT_EQUAL(3, hits);
     sbm_destroy(x);
-    sbm_destroy(y);
+    sbm_destroy(frame);
 }
 
-static void isten(struct saru_bytemat *sbm)
+static void is_ten(struct saru_bytemat *sbm)
 {
    TEST_ASSERT_EQUAL(10, sbm_getxy(sbm, sbm->col, sbm->row)); 
 }
@@ -220,7 +220,7 @@ void test_sbm_foreach(void)
     SBM_CREATE(x, 12, 6);
     sbm_fill(x, 10);
 
-    sbm_foreach(x, isten);
+    sbm_foreach(x, is_ten);
     sbm_destroy(x);
 }
 

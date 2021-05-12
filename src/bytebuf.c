@@ -51,7 +51,7 @@ sbm_wrap(unsigned char *buf, size_t wid, size_t hgt)
  * otherwise it returns BYTE_MAX
  */
 byte 
-sbm_geti(struct saru_bytemat *sbm, size_t i)
+sbm_geti(const struct saru_bytemat *sbm, size_t i)
 {
     if (i < sbm->len)
         return sbm->buf[i];
@@ -63,7 +63,7 @@ sbm_geti(struct saru_bytemat *sbm, size_t i)
  * otherwise it returns BYTE_MAX
  */
 byte 
-sbm_getxy(struct saru_bytemat *sbm, size_t x, size_t y)
+sbm_getxy(const struct saru_bytemat *sbm, size_t x, size_t y)
 {
     if (x < sbm->wid && y < sbm->hgt)
         return sbm->buf[y * sbm->wid + x];
@@ -84,9 +84,9 @@ sbm_putxy(struct saru_bytemat *sbm, byte b, size_t x, size_t y)
  * sums two mxn matrices (x and y) and populates out with the result
  */
 void
-sbm_sum(struct saru_bytemat *x, struct saru_bytemat *y, struct saru_bytemat *out) {
-    if (x->wid == y->wid && x->hgt == y->hgt &&
-        out->wid == x->wid && out->hgt == x->hgt)
+sbm_sum(const struct saru_bytemat *x, const struct saru_bytemat *y, struct saru_bytemat *out) {
+    // if all dimensions match
+    if (x->wid == y->wid && x->hgt == y->hgt && out->wid == x->wid && out->hgt == x->hgt)
         for (size_t i = 0; i < x->len; i++)
             out->buf[i] = x->buf[i] + y->buf[i];
 }
@@ -95,7 +95,7 @@ sbm_sum(struct saru_bytemat *x, struct saru_bytemat *y, struct saru_bytemat *out
  * returns the grand sum of the elements in the matrix
  */
 size_t
-sbm_gsum(struct saru_bytemat *sbm)
+sbm_gsum(const struct saru_bytemat *sbm)
 {
     size_t sum = 0;
     for (size_t i = 0; i < sbm->len; i++)
@@ -113,31 +113,33 @@ sbm_fill(struct saru_bytemat *sbm, byte c)
 }
 
 size_t
-sbm_size(struct saru_bytemat *sbm)
+sbm_size(const struct saru_bytemat *sbm)
 {
     return sbm->len;
 }
 
 /**
- * returns 1 if for every element in x there is a corresponding element
- * in y, otherwise 0
+ * returns 1 if for every element in t there is a corresponding element
+ * in f, otherwise 0
  */
 int 
-sbm_injective(struct saru_bytemat *x, struct saru_bytemat *y)
+sbm_injective(const struct saru_bytemat *t, const struct saru_bytemat *f)
 {
-   return (x->wid <= y->wid && x->hgt <= y->hgt);
+   return t->wid <= f->wid && t->hgt <= f->hgt;
 }
 
 /**
- * returns 1 if for every element in submatrix x
- * there is a corresponding element in submatrix y
+ * returns 1 if for every element in submatrix t
+ * there is a corresponding element in submatrix f
+ * ie f > t
  * otherwise 0,
  * submatrices are accessed using the row and col members
  */
 int 
-sbm_subinjective(struct saru_bytemat *x, struct saru_bytemat *y)
+sbm_subinjective(const struct saru_bytemat *t, const struct saru_bytemat *f)
 {
-   return x->col + y->wid <= x->wid && x->row + y->hgt <= x->hgt;
+    return t->wid + f->col <= f->wid &&
+           t->hgt + f->row <= f->hgt;
 }
 
 /**
@@ -176,7 +178,7 @@ sbm_foreach(struct saru_bytemat *x, void (*func)(struct saru_bytemat *))
 }
 
 void
-sbm_print(struct saru_bytemat *sbm)
+sbm_print(const struct saru_bytemat *sbm)
 {
     for (size_t i = 0; i < sbm->len; i++)
         printf("%u ", sbm->buf[i]);
