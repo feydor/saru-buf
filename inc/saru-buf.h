@@ -19,12 +19,12 @@ struct saru_buf {
 struct saru_buf *sb_create(size_t len);
 void sb_destroy(struct saru_buf *sb);
 void sb_fill(struct saru_buf *sb, int c);
-size_t sb_len(struct saru_buf *sb);
+size_t sb_len(const struct saru_buf *sb);
 void sb_strcpy(struct saru_buf *sb, char *str, size_t n);
 void sb_memcpy(struct saru_buf *sb, void *src, size_t n, size_t typesize);
 void sb_put(struct saru_buf *sb, void *elem, size_t i);
-void *sb_get(struct saru_buf *sb, size_t i);
-void sb_print(struct saru_buf *sb, void (*print)(void *));
+void *sb_get(const struct saru_buf *sb, size_t i);
+void sb_print(const struct saru_buf *sb, void (*print)(void *));
 
 #define SB_CREATE(sbm, len) \
     struct saru_buf *sbm; \

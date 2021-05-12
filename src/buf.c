@@ -44,7 +44,7 @@ sb_fill(struct saru_buf *sb, int c)
 }
 
 size_t
-sb_len(struct saru_buf *sb)
+sb_len(const struct saru_buf *sb)
 {
     return sb->len;
 }
@@ -85,7 +85,7 @@ sb_put(struct saru_buf *sb, void *ptr, size_t i)
  * returns the ith pointer in sb
  */
 void *
-sb_get(struct saru_buf *sb, size_t i)
+sb_get(const struct saru_buf *sb, size_t i)
 {
     if (i < sb->len)
         return sb->buf[i]; 
@@ -96,7 +96,7 @@ sb_get(struct saru_buf *sb, size_t i)
  * calls the passed in print function on each pointer of the buffer
  */
 void
-sb_print(struct saru_buf *sb, void (*print)(void *))
+sb_print(const struct saru_buf *sb, void (*print)(void *))
 {
     if (!sb || !sb->buf || !print)
         return;

@@ -168,7 +168,7 @@ void sb_strcpy(struct saru_buf *sb, char *str, size_t n)
 Copies `n` characters from `str` into the buffer.
 
 ```C
-size_t sb_len(struct saru_buf *sb)
+size_t sb_len(const struct saru_buf *sb)
 ```
 Returns the number of elements in the buffer.
 
@@ -178,12 +178,12 @@ void sb_put(struct saru_buf *sb, void *elem, size_t i)
 Puts the `elem` pointer in the `i`th spot of the buffer.
 
 ```
-void *sb_get(struct saru_buf *sb, size_t i)
+void *sb_get(const struct saru_buf *sb, size_t i)
 ```
 Gets the pointer in the `i`th spot of the buffer.
 
 ```C
-void sb_print(struct saru_buf *sb, void (*print)(void *))
+void sb_print(const struct saru_buf *sb, void (*print)(void *))
 ```
 Runs the passed in `print` function for each element in the buffer.
 Note: The `print` function recieves a pointer to an element, it must be cast to a proper datatype before use.
