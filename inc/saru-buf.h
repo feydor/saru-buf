@@ -26,8 +26,7 @@ void sb_put(struct saru_buf *sb, void *elem, size_t i);
 void *sb_get(const struct saru_buf *sb, size_t i);
 void sb_print(const struct saru_buf *sb, void (*print)(void *));
 
-#define SB_CREATE(sbm, len) \
-    struct saru_buf *sbm; \
-    sbm = sb_create(len);
-
+#define SB_CREATE(sb, len) \
+    struct saru_buf *sb; \
+    sb = sb_create(len)
 #endif

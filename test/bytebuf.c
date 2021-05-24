@@ -100,8 +100,7 @@ void test_sbm_sum(void)
    struct saru_bytemat *x;     
    struct saru_bytemat *y;     
 
-   size_t wid, hgt;
-   wid = 1000, hgt = 1000;
+   size_t wid = 1000, hgt = 1000;
    x = sbm_create(wid, hgt);
    y = sbm_create(wid, hgt);
 
@@ -131,7 +130,7 @@ void test_sbm_gsum(void)
     /* cause 'overflow' */
     struct saru_bytemat *y;
     y = sbm_create(2, 2);
-    sbm_fill(x, 255);
+    sbm_fill(y, 255);
 
     TEST_ASSERT_EQUAL(1020, sbm_gsum(y));
     sbm_destroy(y);

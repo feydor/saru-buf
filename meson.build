@@ -1,6 +1,7 @@
 project(
   'saru-buf', 'c',
-  version : '0.0.1',
+  version : '0.3.0',
+  default_options : ['warning_level=3', 'c_link_args=-fsanitize=address,undefined', 'c_std=c11']
 )
 
 sources = [

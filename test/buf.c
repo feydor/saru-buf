@@ -34,16 +34,8 @@ void tearDown(void)
 
 void test_sb_create(void)
 {
-    /* test initial values */
-    struct saru_buf *ints; // will contain 100 ints
-    ints = sb_create(100);
-
-    sb_fill(ints, 0);
-
+    SB_CREATE(ints, 100);
     TEST_ASSERT_EQUAL(100, ints->len);
-    for (size_t i = 0; i < ints->len; i++)
-        TEST_ASSERT_EQUAL(0, *(int *) sb_get(ints, i)); 
-
     sb_destroy(ints);
 }
 
@@ -87,14 +79,12 @@ void test_sb_memcpy(void)
    SB_CREATE(sb, size);
 
    /* copy the first four elements from ints into sb */
-   sb_fill(sb, 0);
    sb_memcpy(sb, (void *)ints, 4, sizeof(int));
 
    TEST_ASSERT_EQUAL(1, *(int *)sb_get(sb, 0));
    TEST_ASSERT_EQUAL(2, *(int *)sb_get(sb, 1));
    TEST_ASSERT_EQUAL(3, *(int *)sb_get(sb, 2));
    TEST_ASSERT_EQUAL(4, *(int *)sb_get(sb, 3));
-   TEST_ASSERT_EQUAL(0, *(int *)sb_get(sb, 4));
 
    sb_destroy(sb);
 }

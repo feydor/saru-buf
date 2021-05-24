@@ -153,17 +153,17 @@ sbm_subinjective(const struct saru_bytemat *t, const struct saru_bytemat *f)
  * and sets the optional row and col parameters to its coordinates
  */
 size_t
-sbm_max(const struct saru_bytemat *x, size_t *col, size_t *row)
+sbm_max(const struct saru_bytemat *sbm, size_t *col, size_t *row)
 {
     size_t maxrow = 0, maxcol = 0;
     size_t tmax = 0;
-    for (size_t row = 0; row < x->hgt; row++)
-        for (size_t col = 0; col < x->wid; col++) {
-            const byte b = sbm_getxy(x, col, row);
+    for (size_t y = 0; y < sbm->hgt; y++)
+        for (size_t x = 0; x < sbm->wid; x++) {
+            const byte b = sbm_getxy(sbm, x, y);
             if (b > tmax) {
                 tmax = b;
-                maxrow = row;
-                maxcol = col;
+                maxrow = y;
+                maxcol = x;
             }
         }
 
@@ -199,4 +199,13 @@ sbm_destroy(struct saru_bytemat *sbm)
 {
     free(sbm->buf);
     free(sbm);
+    sbm->buf = NULL;
+    sbm = NULL;
+}
+
+void
+sbm_destroy_wrapped(struct saru_bytemat *sbm)
+{
+    free(sbm);
+    sbm = NULL;
 }

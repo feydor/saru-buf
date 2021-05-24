@@ -60,15 +60,16 @@ void sbm_foreach(struct saru_bytemat *x, void (*func)(struct saru_bytemat *));
 void sbm_print(const struct saru_bytemat *sbm);
 
 void sbm_destroy(struct saru_bytemat *sbm);
+void sbm_destroy_wrapped(struct saru_bytemat *sbm);
 
 /* macros */
 #define SBM_CREATE(sbm, wid, hgt) \
     struct saru_bytemat *sbm; \
-    sbm = sbm_create(wid, hgt);
+    sbm = sbm_create(wid, hgt)
 
 #define SBM_WRAP(sbm, buf, wid, hgt) \
     struct saru_bytemat *sbm; \
-    sbm = sbm_wrap(buf, wid, hgt);
+    sbm = sbm_wrap(buf, wid, hgt)
 
 /**
  * taken from: https://stackoverflow.com/questions/400951/does-c-have-a-foreach-loop-construct

@@ -31,18 +31,6 @@ sb_destroy(struct saru_buf *sb)
     free(sb);
 }
 
-/**
- * fills the buffer with pointers to ints containing c
- */
-void
-sb_fill(struct saru_buf *sb, int c)
-{
-    int arr[sb->len];
-    memset(arr, c, sb->len * sizeof(int));
-    for (size_t i = 0; i < sb->len; i++)
-        sb->buf[i] = (void *)&arr[i];
-}
-
 size_t
 sb_len(const struct saru_buf *sb)
 {
@@ -67,7 +55,7 @@ sb_memcpy(struct saru_buf *sb, void *src, size_t n, size_t typesize)
     if (n <= sb->len)
         for (size_t i = 0; i < n; i++) {
             sb->buf[i] = (void *)src;
-            src = (void *)(char *)src + typesize;
+            src = (void *)((char *)src + typesize);
         }
 }
 

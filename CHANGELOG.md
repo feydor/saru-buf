@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.3.0] - 2020-05-24
+## Added 
+- sbm_destroy_wrapped to free a wrapped bytemat.
+- clang -fsanitize=address,undefined linking.
+## Fixed
+- all: Macros had trailing semicolons.
+- sbm_destroy: Setting freed pointers to NULL.
+- sb_len: Arithmetic on void pointer.
+- sbm_max: Local variables row and col were overwriting the parameters of the same name.
+- test_sbm_gsum: Was filling the wrong bytemat.
+### Removed
+- sb_fill from saru_buf.
+
 ## [v0.2.0] - 2020-05-14
 ### Added
 - API documentation detailing usage and examples.
